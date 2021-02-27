@@ -4,7 +4,7 @@
   "description": "HomeWork",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "cross-env COLOR=red node app.js --primary=blue"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,13 @@
   "bugs": {
     "url": "https://github.com/valikwork/HillelNodeJs/issues"
   },
-  "homepage": "https://github.com/valikwork/HillelNodeJs#readme"
+  "homepage": "https://github.com/valikwork/HillelNodeJs#readme",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "cross-env": "^7.0.3",
+    "yargs": "^16.2.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  }
 }
