@@ -1,5 +1,5 @@
 const { createServer } = require('http');
-const { getAssets, getMessages, addMessage } = require('./controller');
+const { getAssets, getMessages, addMessage, updateMessage, deleteMessage } = require('./controller');
 
 const FileType = require('file-type');
 const PORT = process.env.PORT || 3000;
@@ -26,6 +26,10 @@ const server = createServer( async (req, res) => {
             return getMessages(req, res)
         } else if(req.method === "POST"){
             return addMessage(req, res)
+        } else if(req.method === "PUT"){
+            return updateMessage(req, res)
+        } else if(req.method === "DELETE"){
+            return deleteMessage(req, res)
         }
         
     }

@@ -7,7 +7,7 @@ const messages = [
         date: new Date(),
         text: "new message",
         from: "user1",
-        id: Math.random()
+        id: 1
     }
 ]
 
@@ -40,19 +40,25 @@ exports.addMessage = async (req, res) => {
     res.end()
 }
 
-exports.updateMessage = (req, res) => {
-    const body = req.body
-    const pathID = req.pathname.exec(/{messages\/\d}/)
-    const message = messages.find(e => e.id === pathID)
-    Object.assign(message, body)
+exports.updateMessage = async (req, res) => {
+    let body = '';
+    for await (const chunk of req) {
+        body += chunk;
+    }
+    body = JSON.parse(body)
+    const searchRegExp = new RegExp(/\d+/);
+    const pathID = searchRegExp.exec(req.pathname)
+    const messageIndex = messages.findIndex(e => e.id === parseInt(pathID[0]))
+    messages[messageIndex] = body
     res.setHeader("Content-Type", "application/json")
     res.write(JSON.stringify(messages))
     res.end()
 }
 
 exports.deleteMessage = (req, res) => {
-    const pathID = req.pathname.exec(/{messages\/\d}/)
-    const messageIndex = messages.findIndex(e => e.id === pathID)
+    const searchRegExp = new RegExp(/\d+/);
+    const pathID = searchRegExp.exec(req.pathname)
+    const messageIndex = messages.findIndex(e => e.id === parseInt(pathID))
     messages.splice(messageIndex, 1)
     res.setHeader("Content-Type", "application/json")
     res.write(JSON.stringify(messages))
