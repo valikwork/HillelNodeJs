@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/valikwork/HillelNodeJs/issues"
   },
-  "homepage": "https://github.com/valikwork/HillelNodeJs#readme"
+  "homepage": "https://github.com/valikwork/HillelNodeJs#readme",
+  "dependencies": {
+    "file-type": "^16.3.0"
+  }
 }
