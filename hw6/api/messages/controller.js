@@ -5,6 +5,21 @@ exports.getMessages = (req, res, next) => {
 }
 
 exports.postMessage = (req, res, next) => {
+    const { login } = req.signedCookies;
+    if (!login) {
+        next({
+            code: 401,
+            message: 'Unauthorized'
+        });
+        return;
+    }
+    const newMessage = {
+        id: req.app.locals.messages.length + 1,
+        text: req.body.text,
+        sender: login,
+        addedAt: Date.now()
+    }
+    req.app.locals.messages.push(newMessage);
     res.send(req.app.locals.messages);
 }
 

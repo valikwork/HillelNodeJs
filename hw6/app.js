@@ -31,8 +31,19 @@ server.locals = {
     isUserLogged: false
 }
 
+function getRandomString(length) {
+    var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var result = '';
+    for ( var i = 0; i < length; i++ ) {
+        result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+    }
+    return result;
+}
+
+const secret = process.env.COOKIE_SECRET || getRandomString(40)
+
 server.use(express.json())
-server.use(cookieParser('ehxPMytbsunv'))
+server.use(cookieParser(secret))
 server.use('/api', api)
 server.use('/assets', express.static( join(__dirname, 'public', 'assets') ))
 // server.use('/', express.static( join(__dirname, 'public', 'views') ))
@@ -40,8 +51,13 @@ server.use('/assets', express.static( join(__dirname, 'public', 'assets') ))
 server.get('/*', (req, res) => {
     // res.redirect('/')
     
+    let messagesToRender = req.app.locals.messages;
+    if(req.signedCookies.login){
+        messagesToRender = messagesToRender.filter(mess => mess.sender === req.signedCookies.login)
+    }
+    
     res.render('index.nunjucks', {
-        messages: req.app.locals.messages,
+        messages: messagesToRender,
         isUserLogged: req.signedCookies.login ? req.signedCookies.login : req.app.locals.isUserLogged,
         date: new Date().toISOString(),
       }

@@ -16,14 +16,18 @@
 
     <ul id="list">
         {% if isUserLogged %}
-            {% for item in messages %}
-                {% if isUserLogged === item.sender %}
-                    <li>{{item.sender}}: {{item.text}}</li>
-                {% endif %}
-            {% endfor %}
+            {% if messages|length %}
+                {% for item in messages %}
+                    {% if isUserLogged === item.sender %}
+                        <li>{{item.addedAt}} | {{item.sender}}: {{item.text}}</li>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <li>Sorry, you have no messages(</li>
+            {% endif %}
         {% else %}
             {% for item in messages %}
-                <li>{{item.sender}}: {{item.text}}</li>
+                <li>{{item.addedAt}} | {{item.sender}}: {{item.text}}</li>
             {% endfor %}
         {% endif %}
     </ul>

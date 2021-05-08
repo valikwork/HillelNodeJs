@@ -10,7 +10,7 @@ exports.checkMessageIdValidation = checkMessageIdValidation
 
 const addMessageIdValidation = {
     [Segments.BODY]: Joi.object().keys({
-        text: Joi.string().alphanum().min(3).max(255).required()
+        text: Joi.string().min(3).max(255).required()
     })
 }
 exports.addMessageIdValidation = addMessageIdValidation

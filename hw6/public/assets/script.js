@@ -1,31 +1,19 @@
 (async () => {
 	
-	const $ul = document.getElementById("list");
 	const $loginForm = document.getElementById("login-form");
-	let isUserLogged = false;
+	const $logoutBtn = document.getElementById("logout");
+	const $addMessageForm = document.getElementById("add-message");
 
 	fetch("/api/auth")
 		.then((data) => {
 			if(data.status === 401){
-				console.log('401 error');
+				console.log('401 error: User Not Logged In');
 			} else {
-				console.log('isUserLogged');
-				isUserLogged = true
+				console.log('User Logged In');
 			}
 		})
-	
-	// fetch("/api/messages")
-	// 	.then((data) => data.json())
-	// 	.then((data) => {
-	// 		data.forEach((element) => {
-	// 			const $li = document.createElement("li");
-	// 			$li.innerHTML = `${element.sender}: ${element.text}`;
-	// 			$ul.appendChild($li);
-	// 		});
-			
-	// 	});
 
-	$loginForm.addEventListener('submit', async (e) => {
+	$loginForm && $loginForm.addEventListener('submit', async (e) => {
 		e.preventDefault()
 		const login = e.target.children.login.value;
 		const body = {
@@ -42,21 +30,31 @@
 		});
 		let responseJson = await response.json();
 		location.reload()
-		console.log(responseJson);
 	})
 
-	
+	$logoutBtn && $logoutBtn.addEventListener('click', async () => {
+		let response = await fetch("/api/auth/logout")
+		let responseJson = await response.json();
+		console.log(responseJson);
+		location.reload()
+	})
 
-	
-
-	async function sendRequest({url, method = 'GET', callback, ...props}) {
-		try {
-			let response = await fetch(url, { method, ...props });
-			let responseJson = await response.json();
-			callback && callback(responseJson);
-		} catch (error) {
-			console.log(error);
+	$addMessageForm && $addMessageForm.addEventListener('submit', async (e) => {
+		e.preventDefault()
+		const text = e.target.children.text.value;
+		const body = {
+			"text": text
 		}
-	}
+		let response = await fetch("/api/messages", { 
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(body)
+		});
+		let responseJson = await response.json();
+		location.reload()
+	})
+
 
 })()

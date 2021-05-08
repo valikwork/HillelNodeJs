@@ -12,7 +12,7 @@ exports.getCurrentUser = (req, res, next) => {
 }
 
 exports.loginUser = (req, res, next) => {
-    res.cookie('login', req.body.username, { httpOnly: true, signed: true })
+    res.cookie('login', req.body.username, { expires: new Date(Date.now() + 300000),httpOnly: true, signed: true })
     res.send({
         message: 'Login success'
     })
