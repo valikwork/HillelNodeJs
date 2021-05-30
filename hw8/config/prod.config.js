@@ -4,8 +4,10 @@ module.exports = {
         options: {
             useCreateIndex: true,
             useNewUrlParser: true,
-            useUnifiedTopology: true
+            useUnifiedTopology: true,
+            useFindAndModify: false
         }
     },
-    saltRounds: 10
+    saltRounds: 10,
+    jwtSecret: process.env.SECRET || 's3cr3t'
 };
