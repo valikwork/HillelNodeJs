@@ -74,8 +74,6 @@ UserSchema.post("save", (doc) => {
     if(doc[inNewSymbol]){
         // @TODO sendConfirmEmail
         const token = jwt.sign({ id: doc._id }, jwtSecret);
-        console.log('doc', doc);
-        console.log('token', token);
         const mailOptions = {
             from: 'PhoneBook Authentification',
             to: doc.email,
