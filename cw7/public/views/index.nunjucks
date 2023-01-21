@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/style.css">
+    <title>HomeWork 6 {{ date }}</title>
+</head>
+<body>
+    {% if isUserLogged %}
+        <p>You are Logged In as {{isUserLogged}}</p>
+    {% else %}
+        <p>You are Not Logged In</p>
+    {% endif %}
+
+    <ul id="list">
+        {% if isUserLogged %}
+            {% if messages|length %}
+                {% for item in messages %}
+                    {% if isUserLogged === item.user %}
+                        <li>{{item.creationDate}} | {{item.user}}: {{item.text}}</li>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <li>Sorry, you have no messages(</li>
+            {% endif %}
+        {% else %}
+            {% for item in messages %}
+                <li>{{item.creationDate}} | {{item.user}}: {{item.text}}</li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+    
+
+    {% if isUserLogged %}
+    <p>Write Your Message</p>
+    <form id="add-message">
+        <input type="text" name="text"/>
+        <button>Add message</button>
+    </form>
+    {% else %}
+    <p>Please, Log In</p>
+    <form id="login-form">
+        <input type="text" name="login"/>
+        <button>Login</button>
+    </form>
+    {% endif %}
+
+    {% if isUserLogged %}
+        <button id="logout">Log Out</button>
+    {% endif %}
+<script src="/assets/script.js"></script>
+</body>
+</html>
